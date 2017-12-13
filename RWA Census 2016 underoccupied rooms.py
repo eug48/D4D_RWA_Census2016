@@ -97,18 +97,22 @@ def calc_underoccupied_rooms(wafer):
 
 columnNames = ["NPRD", "BEDRD"]
 input_filename = "Census2016_Bedrooms_Persons_NSW_LGA.csv"
+input_filename = "Census2016_Bedrooms_Persons_NSW_Suburbs.csv"
 output_filename = input_filename.replace(".csv","") + "-output.csv"
 
 import csv
 
 with open(input_filename) as f, open(output_filename,'w') as o:
     writer = csv.writer(o)
+    #writer.writerow(['lga_name_2014','Underoccupied rooms'])
     writer.writerow(['Suburb','Underoccupied rooms'])
     
     wafers = read_wafers(f, columnNames)
     #wafers = list(wafers)[1:2]
     for wafer in wafers:
-        row = wafer["title"],calc_underoccupied_rooms(wafer)
+        title = wafer["title"]
+        row = title, calc_underoccupied_rooms(wafer)
         #print(*row, sep='')
-        writer.writerow(row)
+        if title != 'Total':
+            writer.writerow(row)
 
